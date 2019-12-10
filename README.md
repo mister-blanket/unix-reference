@@ -16,6 +16,39 @@
 
 ## File System
 
+
+### Encryption
+
+#### Encrypting external drives
+This will wipe the entire drive.
+
+__Encrypting__
+* Use Gparted (GUI) to check device. If you want to encrypt the entire drive, only one partition is needed.
+* Use `df` or `lsblk` to confirm the desired partition.
+* Unmount device: `sudo umount /dev/sd*1`
+* Encrypt partition: `sudo cryptsetup --verbose --verify-passphrase luksFormat /dev/sd*1`
+* Open partition: `sudo cryptsetup luksOpen /dev/sd*1 sd*1`
+* Check where disk is mapped: `sudo fdisk -l`, probably `/dev/mapper/sd*1`
+* Make a filesystem: `sudo mkfs.ext4 /dev/mapper/sd*1`
+
+__Testing__
+* Make folder on system: `sudo mkdir /mnt/media/usb`
+* Mount: `sudo mount /dev/mapper/sdb1 /mnt/encrypted`
+* Add yourself as owner of drive: `sudo chown -R michael /path/to/drive`
+* Add files to drive: `sudo touch /mnt/encrypted/test.txt`
+* Unmount: `sudo umount /dev/mapper/sd*1`
+* Close device: `sudo cryptsetup luksClose sd*1`
+
+__Usage__
+* Decrypt: `sudo cryptsetup luksOpen /dev/sd*1 sd*1`
+* Mount: `sudo mount /dev/mapper/sd*1 /mnt`
+* Manage files: `./backup-blue.sh`
+* Unmount: `sudo umount /dev/mapper/sdb1`
+* Close device: `sudo cryptsetup luksClose sdb1`
+
+
+
+
 ### Making Bootable USB
 
 Burn ISO to disk: `sudo dd bs=4M if=/path/to/iso of=/dev/sdX status=progress && sync`
