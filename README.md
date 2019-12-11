@@ -2,6 +2,8 @@
 
 <!-- TOC -->
 - [File System](#file-system)
+  - [Encryption](#encryption)
+    - [Encrypting external drives](#encrypting-external-drives)
   - [Making Bootable USB](#making-bootable-usb)
   - [Mounting iPhone](#mounting-iphone)
     - [iFuse](#ifuse)
@@ -20,6 +22,7 @@
 ### Encryption
 
 #### Encrypting external drives
+https://averagelinuxuser.com/encrypt-hard-drive-in-linux/
 This will wipe the entire drive.
 
 __Encrypting__
@@ -32,19 +35,18 @@ __Encrypting__
 * Make a filesystem: `sudo mkfs.ext4 /dev/mapper/sd*1`
 
 __Testing__
-* Make folder on system: `sudo mkdir /mnt/media/usb`
-* Mount: `sudo mount /dev/mapper/sdb1 /mnt/encrypted`
-* Add yourself as owner of drive: `sudo chown -R michael /path/to/drive`
-* Add files to drive: `sudo touch /mnt/encrypted/test.txt`
+* Mount: `sudo mount /dev/mapper/sdb1 /mnt`
+* Add yourself as owner of drive: `sudo chown -R michael /mnt`
+* Add files to drive: `sudo touch /mnt/test.txt`
 * Unmount: `sudo umount /dev/mapper/sd*1`
 * Close device: `sudo cryptsetup luksClose sd*1`
 
 __Usage__
 * Decrypt: `sudo cryptsetup luksOpen /dev/sd*1 sd*1`
 * Mount: `sudo mount /dev/mapper/sd*1 /mnt`
-* Manage files: `./backup-blue.sh`
-* Unmount: `sudo umount /dev/mapper/sdb1`
-* Close device: `sudo cryptsetup luksClose sdb1`
+* Manage files
+* Unmount: `sudo umount /dev/mapper/sd*1`
+* Close device: `sudo cryptsetup luksClose sd*1`
 
 
 
